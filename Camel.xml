@@ -1,0 +1,26 @@
+<camel:routeContext
+    id="com.backbase.portal.integration.service.bacs-payellist"
+    xmlns="http://camel.apache.org/schema/spring">
+    <route>
+        <from uri="restlet:/protected/bacs-payment/payeelist?restletMethod=get&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+        <removeHeaders pattern="CamelHttp*"/>
+        <process ref="payeeListCountProcessor"/>
+        <setHeader headerName="CamelHttpMethod">
+            <constant>GET</constant>
+        </setHeader>
+        <setHeader headerName="buildApi">
+            <constant>mulesoft.api.bacs.payeelist</constant>
+        </setHeader>
+        <process ref="apiUriHeaderProcessor"/>
+        <process ref="commonHeadersProcessor"/>
+        <process ref="defaultRequiredHeadersProcessor"/>
+        <log message="start" loggingLevel="DEBUG"/>
+        <to uri="direct:connect-to-mule"/>
+        <log message="start1" loggingLevel="DEBUG"/>
+        <unmarshal>
+            <json library="Jackson" unmarshalTypeName="com.hsbc.cmb.gbb.gb.make.payments.model.bacs.payements.payeelist.BacsPayeeListMuleResp"/>
+        </unmarshal>
+        <process ref="beneficiaryPayeeListMapper"/>
+        <to uri="direct:translate-and-marshall"/>
+    </route>
+</camel:routeContext>
