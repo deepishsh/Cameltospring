@@ -1,164 +1,81 @@
-import com.fasterxml.jackson.annotation.";
-
-import com.hsbc.cmb.gbb.gb.commons.model.AIMException;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.HashMap;
-
 import java.util.List;
-
 import java.util.Map;
 
-Created by 45041327 on 3/27/2019.
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "beneficiaryList", "beneficiaryTotal", "pagination", "aIMException"
+})
+public class BacsPayeeListMuleResp {
 
-@sonPropertyOrder({
+    @JsonProperty("aIMException")
+    private List<AIMException> aIMException = null;
 
-"beneficiaryList", "beneficiary Total",
+    @JsonProperty("beneficiaryList")
+    private List<BeneficiaryList> beneficiaryList = null;
 
-"pagination",
+    @JsonProperty("beneficiaryTotal")
+    private Integer beneficiaryTotal;
 
-"alMException"
+    @JsonProperty("_pagination")
+    private Pagination pagination;
 
-public class BacsPayeeListMuleResp (
+    // Ignore additional properties not bound to specific fields
+    private transient Map<String, Object> additionalProperties = new HashMap<>();
 
-@JsonProperty("aIMException") private List<AIMException> aIMException = null;
+    @JsonProperty("aIMException")
+    public List<AIMException> getAIMException() {
+        return aIMException;
+    }
 
-@sonProperty("beneficiaryList") private List<BeneficiaryList> beneficiaryList = null;
+    @JsonProperty("aIMException")
+    public void setAIMException(List<AIMException> aIMException) {
+        this.aIMException = aIMException;
+    }
 
-@3sonProperty("beneficiaryTotal")
+    @JsonProperty("beneficiaryList")
+    public List<BeneficiaryList> getBeneficiaryList() {
+        return beneficiaryList;
+    }
 
-private Integer beneficiaryTotal;
+    @JsonProperty("beneficiaryList")
+    public void setBeneficiaryList(List<BeneficiaryList> beneficiaryList) {
+        this.beneficiaryList = beneficiaryList;
+    }
 
-@sonProperty("_pagination") private Pagination pagination;
+    @JsonProperty("beneficiaryTotal")
+    public Integer getBeneficiaryTotal() {
+        return beneficiaryTotal;
+    }
 
-@sonIgnore
+    @JsonProperty("beneficiaryTotal")
+    public void setBeneficiaryTotal(Integer beneficiaryTotal) {
+        this.beneficiaryTotal = beneficiaryTotal;
+    }
 
-private transient Map<String, Object> additional Properties new HashMap();
+    @JsonProperty("_pagination")
+    public Pagination getPagination() {
+        return pagination;
+    }
 
-@JsonProperty("aIMException")
+    @JsonProperty("_pagination")
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
+    }
 
-public List<AIMException> getAIMException() { return aIMException;
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
 
-                                            }
-@JsonProperty("aIMException")
-
-public void setAIMException(List<AIMException> aIMException) { this.aIMException aIMException;
-
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
 }
-
-It will return the beneficiary list
-
-@return
-
-@sonProperty("beneficiaryList")
-
-public List<BeneficiaryList> getBeneficiaryList() { return beneficiaryList;
-
-It will set the beneficiary list coming from
-
-mule api
-
-@param beneficiarylist
-
-@JsonProperty("beneficiaryList")
-
-public void setBeneficiaryList(List<BeneficiaryList> beneficiarylist) ( this.beneficiaryList beneficiaryList;
-
-}
-
-It will get the beneficiary total from
-
-mule api
-
-@return
-
-@JsonProperty("beneficiaryTotal") public Integer getBeneficiaryTotal() {
-
-return beneficiaryTotal;
-
-}
-
-It will set the beneficiary total
-
-@param beneficiary Total
-
-@JsonProperty("beneficiaryTotal")
-
-public void setBeneficiaryTotal (Integer beneficiaryTotal) { this.beneficiaryTotal beneficiary Total;
-
-}
-
-/** It will get the pagination that is show the
-
-page number
-
-@return
-
-@JsonProperty("beneficiaryTotal")
-
-public Integer getBeneficiary Total() {
-
-return beneficiary Total;
-
-}
-
-/**
-
-It will set the beneficiary total
-
-@param beneficiaryTotal
-
-@JsonProperty("beneficiaryTotal")
-
-public void setBeneficiaryTotal (Integer beneficiaryTotal) { this.beneficiaryTotal beneficiary Total;
-
-}
-
-/**
-
-It will get the pagination that is show the
-
-page number
-
-* @return
-
-*/
-
-@JsonProperty("_pagination")
-
-public Pagination getPagination() {
-
-return pagination;
-
-}
-
-It will set the pagination
-
-@param pagination
-
-*/
-
-@JsonProperty("_pagination")
-
-public void setPagination (Pagination pagination) { this.pagination = pagination;
-
-}
-
-@JsonAnyGetter
-
-public Map<String, Object> getAdditional Properties() {
-
-return this.additional Properties;
-
-}
-
-@JsonAnySetter
-
-public void setAdditional Property(String name, Object value) { this.additional Properties.put(name, value);
-
-}
-
-Type here to search
-
-  }
