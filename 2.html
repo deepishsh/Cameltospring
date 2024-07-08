@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infosys Migration Accelerator - CAMEL to Spring Boot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+            background-color: #f8f9fa;
+            color: #212121;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .output-container, .project-structure-container {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            height: 100%;
+        }
+        .output-content, .project-structure-content {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+        .folder-structure, .project-structure {
+            list-style-type: none;
+            padding-left: 20px;
+            color: #212121;
+        }
+        .folder-structure li, .project-structure li {
+            margin: 5px 0;
+        }
+        h1, h2 {
+            color: #ffffff;
+            background-color: #6610f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .btn-primary, .btn-convert {
+            background-color: #6610f2;
+            border-color: #6610f2;
+        }
+        .btn-primary:hover, .btn-convert:hover {
+            background-color: #540dcf;
+            border-color: #540dcf;
+        }
+        .btn-convert {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Infosys Migration Accelerator - CAMEL to Spring Boot</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Upload CAMEL Project Folder</h2>
+                <form id="uploadForm" method="post" enctype="multipart/form-data" action="http://localhost:8080/camel">
+                    <div class="form-group">
+                        <input type="file" class="form-control-file" id="folderInput" name="files" webkitdirectory multiple required>
+                        <label class="form-control-file" for="folderInput">Choose folder</label>
+                    </div>
+                    <div class="output-container folder-display">
+                        <h3>Folder Structure</h3>
+                        <ul class="folder-structure" id="folderStructure">
+                            <!-- Folder structure will be displayed here -->
+                        </ul>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                    <button type="button" class="btn btn-convert btn-block" id="convertBtn" style="display: none;">Convert</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2>Converted Project Structure</h2>
+                <div class="project-structure-container conversion-display">
+                    <ul class="project-structure" id="projectStructure">
+                        <!-- Converted project structure will be displayed here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('folderInput').addEventListener('change', function(event) {
+            var files = event.target.files;
+            var folderStructure = document.getElementById('folderStructure');
+            folderStructure.innerHTML = '';
+            
+            var fileMap = {};
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var pathParts = file.webkitRelativePath.split('/');
+                var currentLevel = fileMap;
+
+                for (var j = 0; j < pathParts.length; j++) {
+                    var part = pathParts[j];
+                    if (!currentLevel[part]) {
+                        currentLevel[part] = (j === pathParts.length - 1) ? file : {};
+                    }
+                    currentLevel = currentLevel[part];
+                }
+            }
+
+            function createFolderList(folder, parentElement) {
+                var ul = document.createElement('ul');
+                for (var key in folder) {
+                    var li = document.createElement('li');
+                    li.textContent = key;
+                    if (typeof folder[key] === 'object') {
+                        createFolderList(folder[key], li);
+                    }
+                    ul.appendChild(li);
+                }
+                parentElement.appendChild(ul);
+            }
+
+            createFolderList(fileMap, folderStructure);
+
+            // Show the Convert button after folder structure is displayed
+            document.getElementById('convertBtn').style.display = 'block';
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('Folder uploaded successfully');
+                },
+                error: function(xhr, status, error) {
+                    alert('Folder upload failed');
+                }
+            });
+        });
+
+        // Sample conversion logic (dummy implementation)
+        document.getElementById('convertBtn').addEventListener('click', function() {
+            // Example data to show structure
+            var convertedStructure = {
+                'src': {
+                    'main': {
+                        'java': {
+                            'com': {
+                                'example': {
+                                    'controller': {},
+                                    'service': {}
+                                }
+                            }
+                        },
+                        'resources': {
+                            'application.properties': {}
+                        }
+                    },
+                    'test': {
+                        'java': {
+                            'com': {
+                                'example': {
+                                    'controller': {},
+                                    'service': {}
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            
+            var projectStructure = document.getElementById('projectStructure');
+            projectStructure.innerHTML = '';
+            
+            function createProjectList(structure, parentElement) {
+                var ul = document.createElement('ul');
+                for (var key in structure) {
+                    var li = document.createElement('li');
+                    li.textContent = key;
+                    if (typeof structure[key] === 'object') {
+                        createProjectList(structure[key], li);
+                    }
+                    ul.appendChild(li);
+                }
+                parentElement.appendChild(ul);
+            }
+
+            createProjectList(convertedStructure, projectStructure);
+        });
+    </script>
+</body>
+</html>
